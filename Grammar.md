@@ -1,3 +1,4 @@
+```
 JAVA ::= DEC+
 DEC ::= FILEDEC | FOLDERDEC
 FOLDERDEC ::= “Folder” FNAME DEC* “End” FNAME
@@ -12,10 +13,10 @@ PRIMITIVE ::= ”int” | ”double” | ”char”
 INHERIT ::= STRING
 MNAME ::= STRING
 CNAME ::= STRING
+```
 
-
-Example 1
-
+# Example 1
+```
 Folder src
     Folder classes
         Abstract Vehicle, Data: brand String, value int, year int, seats int
@@ -23,10 +24,10 @@ Folder src
         Class Bicycle > Vehicle, Data: wheelsSize int gs
     End classes
 End src
+```
 
-
-Example 2
-
+# Example 2
+```
 Folder root
     Folder Humans
         Class Person, Data: name String, age int
@@ -38,9 +39,10 @@ End root
 Folder tests
     Class UnitTest
 End tests
+```
 
-Other things we talked about:
-# No g / s  => make the field public otherwise, private
-# we can make files without folders 
-# empty folders are not allowed
+# Other things we talked about:
+- No g / s  => make the field public otherwise, private
+- We can make files without folders 
+- Empty folders are not allowed
 
