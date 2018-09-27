@@ -1,4 +1,7 @@
 Task
 
-You are preparing to make a Java program to model a family of a person. This will include various kinds of family relationships, and possibly pets too. Our language lets you setup your folders, classes, and the member variables (and their getters/setter). You don’t need to worry about any actual implementation.
+You are preparing to make a Java program to model a family of a person.
+This will include various kinds of family relationships, and possibly pets too.
+Our language lets you setup your folders, classes, and the member variables (and their getters/setter).
+You don’t need to worry about any actual implementation.
 
