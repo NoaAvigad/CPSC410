@@ -3,10 +3,10 @@ JAVA ::= DEC+
 DEC ::= FILEDEC | FOLDERDEC
 FOLDERDEC ::= “Folder” FNAME DEC* “End” FNAME
 FNAME ::= STRING
-FILEDEC ::= CLASSTYPE CNAME (“>” INHERIT)? (“, “ DATA)?
+FILEDEC ::= CLASSTYPE CNAME (“>” INHERIT)? (DATA)?
 CLASSTYPE ::= “Class” | “Abstract”
-DATA ::= “Data:” MEMBERDEC (", " MEMBERDEC)*
-MEMBERDEC ::=  MNAME MTYPE “g”?”s”?
+DATA ::= “(” MEMBERDEC (", " MEMBERDEC)*
+MEMBERDEC ::=  MTYPE MNAME ("[" "get”? "/"? ”set”? "]")?
 MTYPE ::= OBJECT | ”List<”OBJECT”>” | PRIMITIVE
 OBJECT ::= “String” | ”Integer” | ”Character” | ”Double”
 PRIMITIVE ::= ”int” | ”double” | ”char”
@@ -19,9 +19,9 @@ CNAME ::= STRING
 ```
 Folder src
     Folder classes
-        Abstract Vehicle, Data: brand String, value int, year int, seats int
-        Class Car > Vehicle, Data: engineSize int gs
-        Class Bicycle > Vehicle, Data: wheelsSize int gs
+        Abstract Vehicle (String brand, int value, int year, int seats)
+        Class Car > Vehicle (int engineSize [get/set])
+        Class Bicycle > Vehicle (int wheelsSize [get/set])
     End classes
 End src
 ```
@@ -30,11 +30,11 @@ End src
 ```
 Folder root
     Folder Humans
-        Class Person, Data: name String, age int
-        Class Teacher > Person, Data: yearsOfExperience int gs, subject String g
-        Class Student > Person, Data: grade int s
+        Class Person (String name, int age)
+        Class Teacher > Person (int yearsOfExperience [get/set], String subject [get])
+        Class Student > Person (int grade [set])
     End Humans
-    Class Robots, Data: components List<String> gs
+    Class Robots, (List<String> components [get/set])
 End root
 Folder tests
     Class UnitTest
@@ -42,7 +42,7 @@ End tests
 ```
 
 # Other things we talked about:
-- No g / s  => make the field public otherwise, private
+- No get / set  => make the field public otherwise, private
 - We can make files without folders 
 - Empty folders are not allowed
 
