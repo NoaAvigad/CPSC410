@@ -42,6 +42,27 @@ Folder tests
 End tests
 ```
 
+new format:
+```
+Folder root {
+      Folder Humans {
+          Class Person
+          Class Teacher
+          Class Student
+      }
+      Class Robot
+}
+Folder tests {
+    Class UnitTest
+}
+
+Person (String name, int age)
+Teacher > Person (int yearsOfExperience [get/set], String subject [get])
+Student > Person (int grade [set])
+Robots (List<String> components [get/set])
+UnitTest
+```
+
 # Other things we talked about:
 - No get / set  => make the field public otherwise, private
 - We can make files without folders 
