@@ -13,4 +13,6 @@ abstract class FILE {
     }
 
     public abstract void parse();
+    public abstract void validate();
+    public abstract void evaluate();
 }

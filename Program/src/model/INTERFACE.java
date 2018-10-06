@@ -9,4 +9,14 @@ public class INTERFACE extends FILE {
     public void parse() {
 
     }
+
+    @Override
+    public void validate() {
+
+    }
+
+    @Override
+    public void evaluate() {
+
+    }
 }
