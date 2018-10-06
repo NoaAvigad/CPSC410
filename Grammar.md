@@ -56,10 +56,11 @@ Folder tests {
     Class UnitTest
 }
 
-Person (String name, int age)
-Teacher > Person (int yearsOfExperience [get/set], String subject [get])
-Student > Person (int grade [set])
-Robots (List<String> components [get/set])
+Abstract Thing
+Class Person > Thing (String name, int age)
+Class Teacher > Person (int yearsOfExperience [get/set], String subject [get])
+Class Student > Person (int grade [set])
+Class Robots (List<String> components [get/set])
 UnitTest
 ```
 
