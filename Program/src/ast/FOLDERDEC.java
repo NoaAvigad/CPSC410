@@ -1,13 +1,33 @@
 package ast;
 
-public class FOLDERDEC extends FSDEC {
+import libs.DecFactory;
+import libs.TokenizedLine;
+import ui.Main;
 
-    public FOLDERDEC(String path) {
-        super(path);
+public class FOLDERDEC extends DEC {
+    public FOLDERDEC(TokenizedLine tokens) {
+        super(tokens);
     }
 
     @Override
     public void parse() {
-        // Set name, make partial model obj
+        System.out.println("Parsing " + this.name);
+        Main.parseManager.enterDirectory(this.name);
+        while(!Main.parseManager.eof() && Main.parseManager.nextIsSameDirectory()) {
+            DEC child = DecFactory.getDec(Main.parseManager.yieldTokenizedLine());
+            child.parse();
+        }
+        Main.parseManager.leaveDirectory();
+        Main.symbolTable.put(this.name, this);
+    }
+
+    @Override
+    public void validate() {
+
+    }
+
+    @Override
+    public void evaluate() {
+
     }
 }
