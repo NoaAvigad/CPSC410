@@ -1,16 +1,21 @@
 package ui;
 
-import libs.Tokenizer;
+import ast.DEC;
+import libs.DecFactory;
+import libs.ParseManager;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class Main {
-    public static Map<String,Object> symbolTable = new HashMap<>();
+    public static Map<String, DEC> symbolTable = new HashMap<>();
+    public static ParseManager parseManager;
+    private static String ROOT_DIR = "./out";
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
         /*
@@ -22,6 +27,20 @@ public class Main {
         need to be instantiated etc.
         Might need a new Program class or we can just make the calls directly in here.
          */
+        String input = "";
+        try {
+            input = new String(Files.readAllBytes(Paths.get("input.perc")), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            System.out.println("Didn't find file");
+            System.exit(0);
+        }
+        ArrayList<String> lines = new ArrayList<>(Arrays.asList(input.split("\n")));
+        Main.parseManager = new ParseManager(lines, ROOT_DIR);
+        while(!Main.parseManager.eof()) {
+            DEC rootDec = DecFactory.getDec(parseManager.yieldTokenizedLine());
+            rootDec.parse();
+        }
+        System.out.println("Done");
     }
 
 }

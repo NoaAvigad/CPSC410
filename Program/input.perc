@@ -1,0 +1,6 @@
+Folder rootDir
+  Class innerClass > innerClass2(int test [get], String test [set])
+  Folder innerDir
+    Class innerInnerClass
+  Class innerClass2
+Class rootClass
