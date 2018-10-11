@@ -1,7 +1,4 @@
-Folder Dir
-  Class InnerClass > innerClass2(int test [get], String test [set])
-  Abstract AbstractClass
-  Folder innerDir
-    Class innerInnerClass
-  Class innerClass2
-Class rootClass
+Folder root
+    Folder humans
+        Class Person (String name, int age)
+        Class Teacher > Person (String name)

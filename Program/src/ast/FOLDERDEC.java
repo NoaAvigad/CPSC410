@@ -20,7 +20,11 @@ public class FOLDERDEC extends DEC {
             child.parse();
         }
         Main.parseManager.leaveDirectory();
-        Main.symbolTable.put(this.name, this);
+
+        if (Main.symbolTable.containsKey(this.fullPath + ".folder")) {
+            this.kill("Folder name already exists in this directory");
+        }
+        Main.symbolTable.put(this.fullPath + ".folder", this);
     }
 
     @Override

@@ -2,7 +2,6 @@ package ast;
 
 import libs.TokenizedLine;
 import ui.Main;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,22 +23,68 @@ abstract class FILEDEC extends DEC {
             } else {
                 this.tokens.pop(); // Consume ">";
                 this._extends = tokens.pop();
+
+                // if not full path assume same directory
+                String extendClassName = this._extends.contains("/") ?
+                        this._extends :
+                        this.fullPath.substring(this.fullPath.lastIndexOf("/")) + this._extends;
+
+                // if same as class name => kill
+                if (extendClassName.equals(this.fullPath)) {
+                    this.kill("Class cannot extend itself");
+                }
+
+                this._extends = extendClassName; //update to have the full path
             }
         }
         if (this.tokens.checkNext("(")) {
             this.parseMembers();
         }
-        Main.symbolTable.put(this.name, this);
+
+
+        if (Main.symbolTable.containsKey(this.fullPath + ".file")) {
+            this.kill("Class name already exists in this directory");
+        }
+
+        Main.symbolTable.put(this.fullPath + ".file", this);
     }
 
     // I think these will largely be the same  be the same between abstract and class,
     // so we can put most of the functionality here and call super() plus any details.
     @Override
     public void validate() {
+        // check that extended class exists
+        if (this._extends != null) {
+            System.out.println("BARAK LOOK HERE: " + this._extends);
+            if (!Main.symbolTable.containsKey(this._extends + ".file")) {
+                this.kill("extended class does not exist");
+            }
+
+            // check parent class getter and setters
+            FILEDEC parent = (FILEDEC) Main.symbolTable.get(this._extends + ".file");
+
+            for (MEMBER pm : parent.members) {
+
+                for (MEMBER m : this.members) {
+                    System.out.println("comparing: " + pm.name + " and " + m.name);
+                    if (pm.getName().equals(m.getName()) && pm.getType().equals(m.getType())) {
+                        // current member matches a parent member
+                        m.pHasGet = pm.hasGetter();
+                        m.pHasSet = pm.hasSetter();
+
+                        // set parent memeber to be protected
+                        pm.isProtect = true;
+                    }
+                }
+            }
+        }
+
+        // validation other than superclass validations
     }
 
     @Override
     public void evaluate() {
+        // memeber has 3 flags to tell if the parent has a getter, a setter and if it should be using the keyword protected :)
         try {
             /**
              * Since we evaluate in a random order (by iterating over the map), might need to create the folder for each
@@ -52,6 +97,7 @@ abstract class FILEDEC extends DEC {
         } catch (IOException e) {
             this.kill("Error creating file with the following path: " + fullPath);
         }
+
     }
 
     protected void parseMembers() {

@@ -17,7 +17,7 @@ public class ABSTRACTDEC extends FILEDEC {
 
     @Override
     public void validate() {
-
+        super.validate();
     }
 
     @Override

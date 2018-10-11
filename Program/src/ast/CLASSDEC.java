@@ -20,7 +20,7 @@ public class CLASSDEC extends FILEDEC {
 
     @Override
     public void validate() {
-
+        super.validate();
     }
 
     @Override
@@ -33,11 +33,25 @@ public class CLASSDEC extends FILEDEC {
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw))
         {
-            out.println("public class " + name + " {");
+            out.println("public class " + this.name + " {");
+            out.println();
+            out.println();
+            for(MEMBER mem : this.members) {
+                System.out.println("The member: " + mem.name + "is protected: " + mem.isProtect);
+                StringBuilder sb = new StringBuilder();
+                if(mem.isProtect) {
+                    sb.append("protected");
+                } else {
+                    sb.append("private");
+                }
+
+                sb.append(" ").append(mem.type).append(" ").append(mem.name).append(";");
+                out.println(sb.toString());
+            }
             out.println("}");
 
         } catch (IOException e) {
-            System.out.println("error writing to class file");
+            System.out.println("error writing to " + this.name + ".java");
         }
 
     }

@@ -42,11 +42,18 @@ public class Main {
             rootDec.parse();
         }
 
+        System.out.println("STARTING VALIDATE");
+        for(DEC dec : symbolTable.values()) {
+            dec.validate();
+        }
+        System.out.println("ENDING VALIDATE");
+
+
         System.out.println("STARTING EVALUATE");
-        System.out.println(symbolTable.size());
         for(DEC dec : symbolTable.values()) {
             dec.evaluate();
         }
+        System.out.println("ENDING EVALUATE");
 
 
         System.out.println("Done");
