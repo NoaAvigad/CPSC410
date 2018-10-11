@@ -19,17 +19,22 @@ public class TokenizedLine {
     }
 
     public String pop() {
-        return this.tokens.pop();
+        try {
+            return this.tokens.pop();
+        } catch (EmptyStackException e) {
+            System.out.println("Tried to pop empty stack");
+            System.exit(1);
+        }
     }
 
     public String peek() {
         return this.tokens.peek();
     }
 
-    public void checkNext(String comparator) {
-        if(!this.peek().equals(comparator)) {
-            System.exit(1);
-        }
+    public boolean eof() { return this.tokens.empty(); }
+
+    public boolean checkNext(String comparator) {
+        return !this.eof() && !this.peek().equals(comparator);
     }
 
 

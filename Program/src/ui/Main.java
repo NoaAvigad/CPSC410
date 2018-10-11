@@ -35,7 +35,6 @@ public class Main {
             System.exit(0);
         }
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(input.split("\n")));
-        Collections.reverse(lines);
         Main.parseManager = new ParseManager(lines, ROOT_DIR);
         while(!Main.parseManager.eof()) {
             System.out.println("In main loop");

@@ -10,8 +10,7 @@ public class ABSTRACTDEC extends FILEDEC {
     }
     @Override
     public void parse() {
-        System.out.println("Parsing " + this.name);
-        Main.symbolTable.put(this.name, this);
+        super.parse();
     }
 
     @Override

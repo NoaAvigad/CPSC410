@@ -1,6 +1,9 @@
 Folder rootDir
-  Class innerClass(int test [get/set])
+  Class innerClass > innerClass2(int test [get/set])
   Folder innerDir
     Class innerInnerClass
   Class innerClass2
 Class rootClass
+
+
+innerClass -> object(ClassDec)

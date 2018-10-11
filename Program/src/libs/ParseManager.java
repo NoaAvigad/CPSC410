@@ -1,17 +1,17 @@
 package libs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 public class ParseManager {
     private Stack<String> pathStack = new Stack<>();
     private Stack<String> lineStack = new Stack<>();
     private int currentIndent = 0;
-    private int spacesPerIndent;
+    private int spacesPerIndent = 4; // Arbitrary default that won't be used
 
     public ParseManager(ArrayList<String> lines, String root) {
         this.pathStack.push(root);
-        this.lineStack.addAll(lines);
         for(String line : lines) {
             int spaces = this.countSpaces(line);
             if(spaces > 0) {
@@ -20,10 +20,11 @@ public class ParseManager {
                     System.exit(1);
                 }
                 this.spacesPerIndent = spaces;
-                return;
+                break;
             }
         }
-        this.spacesPerIndent = 4; // Arbitrary default that won't be used
+        Collections.reverse(lines);
+        this.lineStack.addAll(lines);
     }
 
     public void enterDirectory(String dirname) {
