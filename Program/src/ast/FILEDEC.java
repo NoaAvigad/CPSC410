@@ -3,6 +3,7 @@ package ast;
 import libs.TokenizedLine;
 import ui.Main;
 
+import java.io.File;
 import java.util.ArrayList;
 
 abstract class FILEDEC extends DEC {
@@ -34,12 +35,10 @@ abstract class FILEDEC extends DEC {
     // so we can put most of the functionality here and call super() plus any details.
     @Override
     public void validate() {
-
     }
 
     @Override
     public void evaluate() {
-
     }
 
     protected void parseMembers() {
