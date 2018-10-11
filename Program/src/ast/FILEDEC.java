@@ -22,19 +22,42 @@ abstract class FILEDEC extends DEC {
             } else {
                 this.tokens.pop(); // Consume ">";
                 this._extends = tokens.pop();
+
+                // if not full path assume same directory
+                String extendClassName = this._extends.contains("/") ?
+                        this._extends :
+                        this.fullPath.substring(this.fullPath.lastIndexOf("/")) + this._extends;
+
+                // if same as class name => kill
+                if (extendClassName.equals(this.fullPath)) {
+                    this.kill("Class cannot extend itself");
+                }
+
+                this._extends = extendClassName; //update to have the full path
             }
         }
         if (this.tokens.checkNext("(")) {
             this.parseMembers();
         }
-        Main.symbolTable.put(this.name, this);
+
+
+        if (Main.symbolTable.containsKey(this.fullPath)) {
+            this.kill("Class name already exists in this directory");
+        }
+
+        Main.symbolTable.put(this.fullPath, this);
     }
 
     // I think these will largely be the same  be the same between abstract and class,
     // so we can put most of the functionality here and call super() plus any details.
     @Override
     public void validate() {
-
+        // check that extended class exists
+        if (this._extends != null) {
+            if (!Main.symbolTable.containsKey(this._extends)) {
+                this.kill("extended class does not exist");
+            }
+        }
     }
 
     @Override
