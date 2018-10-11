@@ -26,7 +26,7 @@ abstract class FILEDEC extends DEC {
                 // if not full path assume same directory
                 String extendClassName = this._extends.contains("/") ?
                         this._extends :
-                        this.fullPath.substring(this.fullPath.lastIndexOf("/")) + this._extends;
+                        this.dirPath + "/" + this._extends;
 
                 // if same as class name => kill
                 if (extendClassName.equals(this.fullPath)) {
@@ -81,7 +81,7 @@ abstract class FILEDEC extends DEC {
 
     @Override
     public void evaluate() {
-        // memeber has 3 flags to tell if the parent has a getter, a setter and if it should be using the keyword protected :)  
+        // memeber has 3 flags to tell if the parent has a getter, a setter and if it should be using the keyword protected :)
     }
 
     protected void parseMembers() {
