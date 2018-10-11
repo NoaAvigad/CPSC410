@@ -28,10 +28,11 @@ public class Main {
         Might need a new Program class or we can just make the calls directly in here.
          */
         String input = "";
+
         try {
             input = new String(Files.readAllBytes(Paths.get("input.perc")), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            System.out.println("Didn't find file");
+            System.out.println("Didn't find file :" + e);
             System.exit(0);
         }
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(input.split("\n")));
