@@ -41,11 +41,11 @@ abstract class FILEDEC extends DEC {
         }
 
 
-        if (Main.symbolTable.containsKey(this.fullPath)) {
+        if (Main.symbolTable.containsKey(this.fullPath + ".file")) {
             this.kill("Class name already exists in this directory");
         }
 
-        Main.symbolTable.put(this.fullPath, this);
+        Main.symbolTable.put(this.fullPath + ".file", this);
     }
 
     // I think these will largely be the same  be the same between abstract and class,
@@ -54,15 +54,34 @@ abstract class FILEDEC extends DEC {
     public void validate() {
         // check that extended class exists
         if (this._extends != null) {
-            if (!Main.symbolTable.containsKey(this._extends)) {
+            if (!Main.symbolTable.containsKey(this._extends + ".file")) {
                 this.kill("extended class does not exist");
             }
+
+            // check parent class getter and setters
+            FILEDEC parent = (FILEDEC) Main.symbolTable.get(this._extends + ".file");
+
+            for (MEMBER pm : parent.members) {
+
+                for (MEMBER m : this.members) {
+                    if (pm.getName().equals(m.getName()) && pm.getType().equals(m.getType())) {
+                        // current member matches a parent member
+                        m.pHasGet = pm.hasGetter();
+                        m.pHasSet = pm.hasSetter();
+
+                        // set parent memeber to be protected
+                        pm.isProtect = true;
+                    }
+                }
+            }
         }
+
+        // validation other than superclass validations
     }
 
     @Override
     public void evaluate() {
-
+        // memeber has 3 flags to tell if the parent has a getter, a setter and if it should be using the keyword protected :)  
     }
 
     protected void parseMembers() {
