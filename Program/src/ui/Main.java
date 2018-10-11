@@ -37,10 +37,10 @@ public class Main {
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(input.split("\n")));
         Main.parseManager = new ParseManager(lines, ROOT_DIR);
         while(!Main.parseManager.eof()) {
-            System.out.println("In main loop");
             DEC rootDec = DecFactory.getDec(parseManager.yieldTokenizedLine());
             rootDec.parse();
         }
+        System.out.println("Done");
     }
 
 }

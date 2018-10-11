@@ -6,7 +6,7 @@ import ui.Main;
 import java.util.ArrayList;
 
 abstract class FILEDEC extends DEC {
-    ArrayList<MEMBER> members;
+    ArrayList<MEMBER> members = new ArrayList<>();
     String _extends = null;
 
     public FILEDEC(TokenizedLine tokens) {
@@ -20,9 +20,11 @@ abstract class FILEDEC extends DEC {
             if (this.tokens.eof()) {
                 this.kill("Failed inheritance");
             } else {
+                this.tokens.pop(); // Consume ">";
                 this._extends = tokens.pop();
             }
-        } else if (this.tokens.checkNext("(")) {
+        }
+        if (this.tokens.checkNext("(")) {
             this.parseMembers();
         }
         Main.symbolTable.put(this.name, this);
@@ -42,21 +44,23 @@ abstract class FILEDEC extends DEC {
 
     protected void parseMembers() {
         this.tokens.pop(); // Pop open brace
+        boolean first = true;
         while (!this.tokens.peek().equals(")")) {
+            if(!first) {
+                if(this.tokens.checkNext(",")) {
+                    this.tokens.pop();
+                } else {
+                    this.kill("Invalid member list");
+                }
+            }
             if (this.tokens.eof()) {
                 this.kill("Reached eof parsing members");
             }
-            this.parseMember();
+            MEMBER member = new MEMBER(tokens);
+            member.parse();
+            this.members.add(member);
+            first = false;
         }
         this.tokens.pop(); // Pop close brace
     }
-
-    protected void parseMember() {
-        Boolean get = false;
-        Boolean set = false;
-        String type = tokens.pop();
-        String name = tokens.pop();
-    }
-
-
 }

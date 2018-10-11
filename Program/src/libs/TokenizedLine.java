@@ -3,7 +3,7 @@ package libs;
 import java.util.*;
 
 public class TokenizedLine {
-    private static String[] punctuation = {"/", ",", "(", ")", "[", "]"};
+    private static String[] punctuation = {",", "(", ")", "[", "]"};
     private Stack<String> tokens = new Stack<>();
 
     public TokenizedLine(String source) {
@@ -24,17 +24,24 @@ public class TokenizedLine {
         } catch (EmptyStackException e) {
             System.out.println("Tried to pop empty stack");
             System.exit(1);
+            return ""; // Make IntelliJ happy
         }
     }
 
     public String peek() {
-        return this.tokens.peek();
+        try {
+            return this.tokens.peek();
+        } catch (EmptyStackException e) {
+            System.out.println("Tried to peek empty stack: ");
+            System.exit(1);
+            return ""; // Make IntelliJ happy
+        }
     }
 
     public boolean eof() { return this.tokens.empty(); }
 
     public boolean checkNext(String comparator) {
-        return !this.eof() && !this.peek().equals(comparator);
+        return !this.eof() && this.peek().equals(comparator);
     }
 
 

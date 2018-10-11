@@ -18,9 +18,6 @@ public abstract class DEC extends Node {
         this.tokens = tokens;
     }
 
-    protected void kill(String message) {
-        System.out.println(message);
-        System.exit(1);
-    }
-
+    abstract public void validate();
+    abstract public void evaluate();
 }
