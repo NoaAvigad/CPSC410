@@ -10,6 +10,10 @@ public class MEMBER extends Node {
     private String type;
     private String name;
 
+    public Boolean pHasGet = false;
+    public Boolean pHasSet = false;
+    public Boolean isProtect = false;
+
     public MEMBER(TokenizedLine tokens) {
         this.tokens = tokens;
     }
@@ -40,4 +44,21 @@ public class MEMBER extends Node {
         }
         this.tokens.pop(); // Consume close brace
     }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public Boolean hasSetter() {
+        return this.set;
+    }
+
+    public Boolean hasGetter() {
+        return this.get;
+    }
+
 }
