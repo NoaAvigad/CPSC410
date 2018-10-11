@@ -41,6 +41,14 @@ public class Main {
             DEC rootDec = DecFactory.getDec(parseManager.yieldTokenizedLine());
             rootDec.parse();
         }
+
+        System.out.println("STARTING EVALUATE");
+        System.out.println(symbolTable.size());
+        for(DEC dec : symbolTable.values()) {
+            dec.evaluate();
+        }
+
+
         System.out.println("Done");
     }
 
