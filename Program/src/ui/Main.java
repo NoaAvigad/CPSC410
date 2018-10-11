@@ -15,7 +15,7 @@ import java.util.*;
 public class Main {
     public static Map<String, DEC> symbolTable = new HashMap<>();
     public static ParseManager parseManager;
-    private static String ROOT_DIR = "./out";
+    private static String ROOT_DIR = "./output";
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
         /*

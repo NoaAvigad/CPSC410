@@ -1,10 +1,11 @@
 package ast;
 
 import libs.TokenizedLine;
-import ui.Main;
-
 import java.io.File;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class CLASSDEC extends FILEDEC {
 
@@ -26,17 +27,18 @@ public class CLASSDEC extends FILEDEC {
     public void evaluate() {
         System.out.println("In CLASSDEC");
 
-        try {
-            /**
-             * Since we evaluate in a random order (by iterating over the map), might need to create the folder for each
-             *  file as well.
-             */
-            File parentDir = new File(dirPath);
-            parentDir.mkdirs();
-            File file = new File(fullPath + ".java");
-            file.createNewFile();
+        super.evaluate();
+
+        try(FileWriter fw = new FileWriter(fullPath + ".java", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+            out.println("public class " + name + " {");
+            out.println("}");
+
         } catch (IOException e) {
-            this.kill("Error creating file with the following path: " + fullPath);
+            System.out.println("error writing to class file");
         }
+
     }
 }

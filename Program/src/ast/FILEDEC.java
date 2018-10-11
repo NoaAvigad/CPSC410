@@ -4,6 +4,7 @@ import libs.TokenizedLine;
 import ui.Main;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 abstract class FILEDEC extends DEC {
@@ -39,6 +40,18 @@ abstract class FILEDEC extends DEC {
 
     @Override
     public void evaluate() {
+        try {
+            /**
+             * Since we evaluate in a random order (by iterating over the map), might need to create the folder for each
+             *  file as well.
+             */
+            File parentDir = new File(dirPath);
+            parentDir.mkdirs();
+            File file = new File(fullPath + ".java");
+            file.createNewFile();
+        } catch (IOException e) {
+            this.kill("Error creating file with the following path: " + fullPath);
+        }
     }
 
     protected void parseMembers() {
