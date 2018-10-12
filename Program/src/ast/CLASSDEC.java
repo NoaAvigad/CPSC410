@@ -35,7 +35,18 @@ public class CLASSDEC extends FILEDEC {
         {
 
             // TODO: figure out what to do in case of duplicated names for super class. Need to know where to import from.
-            String inheritanceSignature = this._extends != null ? " extends " + this._extends.substring(this._extends.lastIndexOf("/") + 1) : "";
+            // if same dir, just take classname. if different then need to import and use class name in extends
+            String inheritanceSignature = "";
+            if(this._extends != null) {
+                String parentClassDir = this._extends.substring(0, this._extends.lastIndexOf("/"));
+                if(!dirPath.equals(parentClassDir)) {
+                    out.println("import " + parentClassDir);
+                }
+                inheritanceSignature = " extends " + this._extends.substring(this._extends.lastIndexOf("/") + 1);
+
+            }
+
+
             out.println("public class " + this.name + inheritanceSignature + " {");
             out.println();
             //list for all members that need getter/setter
@@ -65,50 +76,43 @@ public class CLASSDEC extends FILEDEC {
                 //TODO: should be similar loop to the first one. Just need to generate getter/setter for member.
                 StringBuilder sb = new StringBuilder();
                 if(mem.get) {
-                    if(mem.pHasGet) {
-                        //override
-                        out.println(buildOverrideGetSetSb(mem, "get").toString());
-                    } else {
-                        //normal getter
-                        out.println(buildGetSetSb(mem, "get").toString());
-                    }
-
+                    out.println(buildGetSetSb(mem, "get", mem.pHasGet).toString());
                 }
 
+
+
                 if (mem.set) {
-                    if(mem.pHasSet) {
-                        //override
-                        out.println(buildOverrideGetSetSb(mem,"set").toString());
-                    } else {
-                        //normal setter
-                        out.println(buildGetSetSb(mem, "set"));
-                    }
+                    out.println(buildGetSetSb(mem,"set", mem.pHasSet).toString());
                 }
             }
 
             out.println("}");
 
         } catch (IOException e) {
-            System.out.println("Error writing to " + this.name + ".java");
+            this.kill("Error writing to " + this.name + ".java");
         }
     }
 
-    StringBuilder buildOverrideGetSetSb(MEMBER mem, String getOrSet) {
-        return new StringBuilder("\n\t")
-                .append("@Override").append("\n\t")
+    StringBuilder buildGetSetSb(MEMBER mem, String getOrSet, boolean isOverride) {
+        StringBuilder sb = new StringBuilder("\n\t");
+
+        if(isOverride) {
+            sb.append("@Override");
+        }
+
+        sb.append("\n\t")
                 .append("public ").append(mem.type).append(" ")
-                .append(getOrSet).append(mem.name.substring(0,1).toUpperCase()).append(mem.name.substring(1))
-                .append("() {").append("\n\t\t")
-                .append("return this.").append(mem.name).append(";")
-                .append("\n\t}");
+                .append(getOrSet).append(mem.name.substring(0,1).toUpperCase()).append(mem.name.substring(1));
+
+        if(getOrSet.equals("get")) {
+            sb.append("() {").append("\n\t\t").append("return this.").append(mem.name).append(";");
+        } else {
+            sb.append("(" + mem.type + " " + mem.name + ") {").append("\n\t\t").append("this.").append(mem.name).append(" = ").append(mem.name);
+        }
+
+        sb.append("\n\t}");
+        return sb;
     }
 
-    StringBuilder buildGetSetSb (MEMBER mem, String getOrSet) {
-        return new StringBuilder("\n\t")
-                .append("public ").append(mem.type).append(" ")
-                .append(getOrSet).append(mem.name.substring(0,1).toUpperCase()).append(mem.name.substring(1))
-                .append("() {").append("\n\t\t")
-                .append("return this.").append(mem.name).append(";")
-                .append("\n\t}");
-    }
+
 }

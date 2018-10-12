@@ -46,6 +46,7 @@ abstract class FILEDEC extends DEC {
             this.kill("Class name already exists in this directory");
         }
 
+        System.out.println(this.fullPath + ".file");
         Main.symbolTable.put(this.fullPath + ".file", this);
     }
 
@@ -55,6 +56,7 @@ abstract class FILEDEC extends DEC {
     public void validate() {
         // check that extended class exists
         if (this._extends != null) {
+            System.out.println("LOOK HERE: " + this._extends + ".file");
             if (!Main.symbolTable.containsKey(this._extends + ".file")) {
                 this.kill("extended class does not exist");
             }

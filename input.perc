@@ -1,9 +1,9 @@
 Folder root
     Folder humans
-        Class Person (String name [get/set], int age)
+        Class Person (String n [get/set], int age)
         Class Teacher > Person (String name)
 Folder root2
     Folder humans2
         Class Person2 (String name [get/set], int age)
-        Class Teacher2 > Person2 (String name [get/set], int yearsOfExperience [get/set], String subject [get])
+        Class Teacher2 > Person (String name [get/set], int yearsOfExperience [get/set], String subject [get])
 
