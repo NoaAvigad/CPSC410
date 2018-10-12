@@ -12,7 +12,7 @@ public abstract class DEC extends Node {
 
     DEC(TokenizedLine tokens) {
         String name = tokens.pop(); // TODO probably something else
-        this.name = name;
+        this.name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
         this.dirPath = Main.parseManager.getFilepath();
         this.fullPath = this.dirPath + "/" + name;
         this.tokens = tokens;

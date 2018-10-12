@@ -24,18 +24,61 @@ abstract class FILEDEC extends DEC {
             } else {
                 this.tokens.pop(); // Consume ">";
                 this._extends = tokens.pop();
+
+                // if not full path assume same directory
+                String extendClassName = this._extends.contains("/") ?
+                        this._extends :
+                        this.dirPath + "/" + this._extends;
+
+                // if same as class name => kill
+                if (extendClassName.equals(this.fullPath)) {
+                    this.kill("Class cannot extend itself");
+                }
+
+                this._extends = extendClassName; //update to have the full path
             }
         }
         if (this.tokens.checkNext("(")) {
             this.parseMembers();
         }
-        Main.symbolTable.put(this.name, this);
+
+
+        if (Main.symbolTable.containsKey(this.fullPath + ".file")) {
+            this.kill("Class name already exists in this directory");
+        }
+
+        Main.symbolTable.put(this.fullPath + ".file", this);
     }
 
     // I think these will largely be the same  be the same between abstract and class,
     // so we can put most of the functionality here and call super() plus any details.
     @Override
     public void validate() {
+        // check that extended class exists
+        if (this._extends != null) {
+            if (!Main.symbolTable.containsKey(this._extends + ".file")) {
+                this.kill("extended class does not exist");
+            }
+
+            // check parent class getter and setters
+            FILEDEC parent = (FILEDEC) Main.symbolTable.get(this._extends + ".file");
+
+            for (MEMBER pm : parent.members) {
+
+                for (MEMBER m : this.members) {
+                    if (pm.getName().equals(m.getName()) && pm.getType().equals(m.getType())) {
+                        // current member matches a parent member
+                        m.pHasGet = pm.hasGetter();
+                        m.pHasSet = pm.hasSetter();
+
+                        // set parent memeber to be protected
+                        pm.isProtect = true;
+                    }
+                }
+            }
+        }
+
+        // validation other than superclass validations
     }
 
     @Override
