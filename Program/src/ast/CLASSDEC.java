@@ -107,7 +107,7 @@ public class CLASSDEC extends FILEDEC {
         if(getOrSet.equals("get")) {
             sb.append("() {").append("\n\t\t").append("return this.").append(mem.name).append(";");
         } else {
-            sb.append("(" + mem.type + " " + mem.name + ") {").append("\n\t\t").append("this.").append(mem.name).append(" = ").append(mem.name);
+            sb.append("(" + mem.type + " " + mem.name + ") {").append("\n\t\t").append("this.").append(mem.name).append(" = ").append(mem.name).append(";");
         }
 
         sb.append("\n\t}");
