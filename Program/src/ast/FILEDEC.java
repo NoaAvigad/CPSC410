@@ -85,7 +85,6 @@ abstract class FILEDEC extends DEC {
 
     @Override
     public void evaluate() {
-        // memeber has 3 flags to tell if the parent has a getter, a setter and if it should be using the keyword protected :)
         try {
             /**
              * Since we evaluate in a random order (by iterating over the map), might need to create the folder for each
@@ -100,7 +99,6 @@ abstract class FILEDEC extends DEC {
         } catch (IOException e) {
             this.kill("Error creating file with the following path: " + fullPath);
         }
-
     }
 
     protected void parseMembers() {
