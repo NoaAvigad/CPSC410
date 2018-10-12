@@ -60,6 +60,21 @@ public class CLASSDEC extends FILEDEC {
 
             for(MEMBER mem : getterOrSetterMems) {
                 //TODO: should be similar loop to the first one. Just need to generate getter/setter for member.
+                if(mem.get) {
+                    if(mem.pHasGet) {
+                        //override
+                    } else {
+                        //normal getter
+                    }
+                }
+
+                if (mem.set) {
+                    if(mem.pHasSet) {
+                        //override
+                    } else {
+                        //normal setter
+                    }
+                }
 
 
             }
