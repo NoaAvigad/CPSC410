@@ -4,6 +4,8 @@ import libs.TokenizedLine;
 import ui.Main;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 abstract class FILEDEC extends DEC {
@@ -91,6 +93,7 @@ abstract class FILEDEC extends DEC {
              */
             File parentDir = new File(dirPath);
             parentDir.mkdirs();
+            Files.deleteIfExists(Paths.get(fullPath + ".java"));
             File file = new File(fullPath + ".java");
             file.createNewFile();
         } catch (IOException e) {
