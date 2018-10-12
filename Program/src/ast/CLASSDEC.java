@@ -27,8 +27,6 @@ public class CLASSDEC extends FILEDEC {
 
     @Override
     public void evaluate() {
-        System.out.println("In CLASSDEC");
-
         super.evaluate();
 
         try(FileWriter fw = new FileWriter(fullPath + ".java", true);

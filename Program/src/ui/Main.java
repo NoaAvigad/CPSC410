@@ -1,6 +1,7 @@
 package ui;
 
 import ast.DEC;
+import ast.FOLDERDEC;
 import libs.DecFactory;
 import libs.ParseManager;
 
@@ -50,6 +51,7 @@ public class Main {
 
 
         System.out.println("STARTING EVALUATE");
+        DEC.deleteFolderContents();
         for(DEC dec : symbolTable.values()) {
             dec.evaluate();
         }
