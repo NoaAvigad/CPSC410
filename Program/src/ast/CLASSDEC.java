@@ -19,7 +19,31 @@ public class CLASSDEC extends FILEDEC {
 
     @Override
     public void validate() {
+        // check that extended class exists
+        if (this._extends != null) {
+            if (!Main.symbolTable.containsKey(this._extends + ".file")) {
+                this.kill("extended class does not exist");
+            }
 
+            // check parent class getter and setters
+            FILEDEC parent = (FILEDEC) Main.symbolTable.get(this._extends + ".file");
+
+            for (MEMBER pm : parent.members) {
+
+                for (MEMBER m : this.members) {
+                    if (pm.getName().equals(m.getName()) && pm.getType().equals(m.getType())) {
+                        // current member matches a parent member
+                        m.pHasGet = pm.hasGetter();
+                        m.pHasSet = pm.hasSetter();
+
+                        // set parent memeber to be protected
+                        pm.isProtect = true;
+                    }
+                }
+            }
+        }
+
+        // validation other than superclass validations
     }
 
     @Override
