@@ -83,7 +83,6 @@ abstract class FILEDEC extends DEC {
 
     @Override
     public void evaluate() {
-        System.out.println("Evaluating file: " + fullPath + ".java");
         // memeber has 3 flags to tell if the parent has a getter, a setter and if it should be using the keyword protected :)
         try {
             /**
