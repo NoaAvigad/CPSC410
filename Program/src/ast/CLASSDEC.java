@@ -1,7 +1,6 @@
 package ast;
 
 import libs.TokenizedLine;
-import java.io.File;
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
