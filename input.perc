@@ -1,4 +1,4 @@
 Folder root
     Folder humans
-        Class Person (String name, int age)
+        Class Person (gtring name, int age)
         Class Teacher > Person (String name)

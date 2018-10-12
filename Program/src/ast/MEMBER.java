@@ -4,15 +4,16 @@ import libs.Node;
 import libs.TokenizedLine;
 
 public class MEMBER extends Node {
-    protected TokenizedLine tokens;
-    protected Boolean get = false;
-    protected Boolean set = false;
-    protected String type;
-    protected String name;
+    TokenizedLine tokens;
+    Boolean get = false;
+    Boolean set = false;
+    String type;
+    String name;
 
-    protected Boolean pHasGet = false;
-    protected Boolean pHasSet = false;
-    protected Boolean isProtect = false;
+    Boolean pHasGet = false;
+    Boolean pHasSet = false;
+    Boolean isProtect = false;
+    Boolean isInSuper = false;
 
     public MEMBER(TokenizedLine tokens) {
         this.tokens = tokens;
@@ -45,20 +46,5 @@ public class MEMBER extends Node {
         this.tokens.pop(); // Consume close brace
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public Boolean hasSetter() {
-        return this.set;
-    }
-
-    public Boolean hasGetter() {
-        return this.get;
-    }
 
 }

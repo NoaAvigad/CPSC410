@@ -27,7 +27,7 @@ abstract class FILEDEC extends DEC {
                 // if not full path assume same directory
                 String extendClassName = this._extends.contains("/") ?
                         this._extends :
-                        this.fullPath.substring(this.fullPath.lastIndexOf("/")) + this._extends;
+                        this.dirPath + "/" + this._extends;
 
                 // if same as class name => kill
                 if (extendClassName.equals(this.fullPath)) {
@@ -55,7 +55,6 @@ abstract class FILEDEC extends DEC {
     public void validate() {
         // check that extended class exists
         if (this._extends != null) {
-            System.out.println("BARAK LOOK HERE: " + this._extends);
             if (!Main.symbolTable.containsKey(this._extends + ".file")) {
                 this.kill("extended class does not exist");
             }
@@ -66,14 +65,14 @@ abstract class FILEDEC extends DEC {
             for (MEMBER pm : parent.members) {
 
                 for (MEMBER m : this.members) {
-                    System.out.println("comparing: " + pm.name + " and " + m.name);
-                    if (pm.getName().equals(m.getName()) && pm.getType().equals(m.getType())) {
+                    if (pm.name.equals(m.name) && pm.type.equals(m.type)) {
                         // current member matches a parent member
-                        m.pHasGet = pm.hasGetter();
-                        m.pHasSet = pm.hasSetter();
+                        m.pHasGet = pm.get;
+                        m.pHasSet = pm.set;
 
                         // set parent memeber to be protected
                         pm.isProtect = true;
+                        m.isInSuper = true;
                     }
                 }
             }
