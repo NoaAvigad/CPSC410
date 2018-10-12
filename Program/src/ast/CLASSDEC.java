@@ -48,7 +48,6 @@ public class CLASSDEC extends FILEDEC {
 
 
             out.println("public class " + this.name + inheritanceSignature + " {");
-            out.println();
             //list for all members that need getter/setter
             List<MEMBER> getterOrSetterMems = new ArrayList<>();
 
@@ -74,12 +73,9 @@ public class CLASSDEC extends FILEDEC {
             // append to java file all variables getters/setters
             for(MEMBER mem : getterOrSetterMems) {
                 //TODO: should be similar loop to the first one. Just need to generate getter/setter for member.
-                StringBuilder sb = new StringBuilder();
                 if(mem.get) {
                     out.println(buildGetSetSb(mem, "get", mem.pHasGet).toString());
                 }
-
-
 
                 if (mem.set) {
                     out.println(buildGetSetSb(mem,"set", mem.pHasSet).toString());
@@ -97,11 +93,10 @@ public class CLASSDEC extends FILEDEC {
         StringBuilder sb = new StringBuilder("\n\t");
 
         if(isOverride) {
-            sb.append("@Override");
+            sb.append("@Override").append("\n\t");
         }
 
-        sb.append("\n\t")
-                .append("public ").append(mem.type).append(" ")
+        sb.append("public ").append(mem.type).append(" ")
                 .append(getOrSet).append(mem.name.substring(0,1).toUpperCase()).append(mem.name.substring(1));
 
         if(getOrSet.equals("get")) {
