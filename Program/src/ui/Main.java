@@ -52,6 +52,7 @@ public class Main {
 
         System.out.println("STARTING EVALUATE");
         DEC.deleteFolderContents();
+
         for(DEC dec : symbolTable.values()) {
             dec.evaluate();
         }

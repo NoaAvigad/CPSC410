@@ -54,6 +54,7 @@ public class CLASSDEC extends FILEDEC {
                     sb.append(" ").append(mem.type).append(" ").append(mem.name).append(";");
                     out.println(sb.toString());
                 }
+
                 if(mem.get || mem.set) {
                     getterOrSetterMems.add(mem);
                 }
@@ -62,6 +63,7 @@ public class CLASSDEC extends FILEDEC {
             // append to java file all variables getters/setters
             for(MEMBER mem : getterOrSetterMems) {
                 //TODO: should be similar loop to the first one. Just need to generate getter/setter for member.
+                StringBuilder sb = new StringBuilder();
                 if(mem.get) {
                     if(mem.pHasGet) {
                         //override
@@ -70,6 +72,7 @@ public class CLASSDEC extends FILEDEC {
                         //normal getter
                         out.println(buildGetSetSb(mem, "get").toString());
                     }
+
                 }
 
                 if (mem.set) {
@@ -96,7 +99,7 @@ public class CLASSDEC extends FILEDEC {
                 .append("public ").append(mem.type).append(" ")
                 .append(getOrSet).append(mem.name.substring(0,1).toUpperCase()).append(mem.name.substring(1))
                 .append("() {").append("\n\t\t")
-                .append("return this.").append(mem.name)
+                .append("return this.").append(mem.name).append(";")
                 .append("\n\t}");
     }
 
@@ -105,7 +108,7 @@ public class CLASSDEC extends FILEDEC {
                 .append("public ").append(mem.type).append(" ")
                 .append(getOrSet).append(mem.name.substring(0,1).toUpperCase()).append(mem.name.substring(1))
                 .append("() {").append("\n\t\t")
-                .append("return this.").append(mem.name)
+                .append("return this.").append(mem.name).append(";")
                 .append("\n\t}");
     }
 }
