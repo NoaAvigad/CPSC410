@@ -35,7 +35,12 @@ abstract class FILEDEC extends DEC {
                     this.kill("Class cannot extend itself");
                 }
 
-                this._extends = extendClassName; //update to have the full path
+                String parentClassDir = extendClassName.substring(0, extendClassName.lastIndexOf("/") + 1);
+                String parentClassName = extendClassName.substring(extendClassName.lastIndexOf("/") + 1);
+                String fullParentClassPath = parentClassDir + Character.toUpperCase(parentClassName.charAt(0)) + parentClassName.substring(1);
+
+
+                this._extends =  fullParentClassPath;//update to have the full path
             }
         }
         if (this.tokens.checkNext("(")) {
@@ -67,13 +72,14 @@ abstract class FILEDEC extends DEC {
             for (MEMBER pm : parent.members) {
 
                 for (MEMBER m : this.members) {
-                    if (pm.getName().equals(m.getName()) && pm.getType().equals(m.getType())) {
+                    if (pm.name.equals(m.name) && pm.type.equals(m.type)) {
                         // current member matches a parent member
-                        m.pHasGet = pm.hasGetter();
-                        m.pHasSet = pm.hasSetter();
+                        m.pHasGet = pm.get;
+                        m.pHasSet = pm.set;
 
-                        // set parent memeber to be protected
+                        // set parent member to be protected
                         pm.isProtect = true;
+                        m.isInSuper = true;
                     }
                 }
             }
@@ -93,7 +99,7 @@ abstract class FILEDEC extends DEC {
             File parentDir = new File(dirPath);
             parentDir.mkdirs();
             //Files.deleteIfExists(Paths.get(fullPath + ".java"));
-            File file = new File(fullPath + ".java");
+            File file = new File(dirPath + "/" + name + ".java");
             file.createNewFile();
         } catch (IOException e) {
             this.kill("Error creating file with the following path: " + fullPath);
