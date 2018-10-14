@@ -1,6 +1,8 @@
 package ast;
 
 import libs.TokenizedLine;
+import ui.Main;
+
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -21,7 +23,33 @@ public class CLASSDEC extends FILEDEC {
 
     @Override
     public void validate() {
-        super.validate();
+        // check that extended class exists
+        if (this._extends != null) {
+            if (!Main.symbolTable.containsKey(this._extends + ".file")) {
+                this.kill("extended class does not exist");
+            }
+
+            // check parent class getter and setters
+            FILEDEC parent = (FILEDEC) Main.symbolTable.get(this._extends + ".file");
+
+            for (MEMBER pm : parent.members) {
+
+                for (MEMBER m : this.members) {
+                    if (pm.name.equals(m.name) && pm.type.equals(m.type)) {
+                        // current member matches a parent member
+                        m.pHasGet = pm.get;
+                        m.pHasSet = pm.set;
+
+                        // set parent memeber to be protected
+                        pm.isProtect = true;
+                        m.isInSuper = true;
+                    }
+                }
+            }
+        }
+
+        // validation other than superclass validations
+
     }
 
     @Override
@@ -34,13 +62,12 @@ public class CLASSDEC extends FILEDEC {
             PrintWriter out = new PrintWriter(bw))
         {
 
-            // TODO: figure out what to do in case of duplicated names for super class. Need to know where to import from.
             // if same dir, just take classname. if different then need to import and use class name in extends
             String inheritanceSignature = "";
             if(this._extends != null) {
                 String parentClassDir = this._extends.substring(0, this._extends.lastIndexOf("/"));
                 if(!dirPath.equals(parentClassDir)) {
-                    out.println("import " + parentClassDir);
+                    out.println("import " + parentClassDir + "\n");
                 }
                 inheritanceSignature = " extends " + this._extends.substring(this._extends.lastIndexOf("/") + 1);
 
@@ -72,7 +99,6 @@ public class CLASSDEC extends FILEDEC {
 
             // append to java file all variables getters/setters
             for(MEMBER mem : getterOrSetterMems) {
-                //TODO: should be similar loop to the first one. Just need to generate getter/setter for member.
                 if(mem.get) {
                     out.println(buildGetSetSb(mem, "get", mem.pHasGet).toString());
                 }

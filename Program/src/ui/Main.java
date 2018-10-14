@@ -38,7 +38,7 @@ public class Main {
         }
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(input.split("\n")));
         Main.parseManager = new ParseManager(lines, ROOT_DIR);
-        while(!Main.parseManager.eof()) {
+        while (!Main.parseManager.eof()) {
             DEC rootDec = DecFactory.getDec(parseManager.yieldTokenizedLine());
             rootDec.parse();
         }
@@ -51,13 +51,15 @@ public class Main {
 
 
         System.out.println("STARTING EVALUATE");
+        System.out.println(symbolTable.size());
+
         DEC.deleteFolderContents();
 
-        for(DEC dec : symbolTable.values()) {
+        for (DEC dec : symbolTable.values()) {
+            dec.validate();
             dec.evaluate();
         }
         System.out.println("ENDING EVALUATE");
-
 
         System.out.println("Done");
     }

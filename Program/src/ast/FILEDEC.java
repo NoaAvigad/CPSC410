@@ -16,6 +16,7 @@ abstract class FILEDEC extends DEC {
 
     @Override
     public void parse() {
+        this.name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
         System.out.println("Parsing " + this.name);
         if (this.tokens.checkNext(">")) {
             if (this.tokens.eof()) {
@@ -54,33 +55,7 @@ abstract class FILEDEC extends DEC {
     // so we can put most of the functionality here and call super() plus any details.
     @Override
     public void validate() {
-        // check that extended class exists
-        if (this._extends != null) {
-            System.out.println("LOOK HERE: " + this._extends + ".file");
-            if (!Main.symbolTable.containsKey(this._extends + ".file")) {
-                this.kill("extended class does not exist");
-            }
 
-            // check parent class getter and setters
-            FILEDEC parent = (FILEDEC) Main.symbolTable.get(this._extends + ".file");
-
-            for (MEMBER pm : parent.members) {
-
-                for (MEMBER m : this.members) {
-                    if (pm.name.equals(m.name) && pm.type.equals(m.type)) {
-                        // current member matches a parent member
-                        m.pHasGet = pm.get;
-                        m.pHasSet = pm.set;
-
-                        // set parent memeber to be protected
-                        pm.isProtect = true;
-                        m.isInSuper = true;
-                    }
-                }
-            }
-        }
-
-        // validation other than superclass validations
     }
 
     @Override
