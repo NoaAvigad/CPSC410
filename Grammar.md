@@ -1,7 +1,7 @@
 ```
 JAVA ::= DEC+
 DEC ::= FILEDEC | FOLDERDEC
-FOLDERDEC ::= “Folder” FNAME
+FOLDERDEC ::= “Folder” FNAME DEC* 
 FNAME ::= STRING
 FILEDEC ::= CLASSTYPE CNAME (“>” INHERIT)? (DATA)?
 CLASSTYPE ::= “Class” | “Abstract”
