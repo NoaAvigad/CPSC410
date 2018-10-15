@@ -1,3 +1,5 @@
 # Files for IntelliJ
 .idea
 *.iml
+*.DS_Store
+output

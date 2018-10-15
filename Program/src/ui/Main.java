@@ -1,6 +1,7 @@
 package ui;
 
 import ast.DEC;
+import ast.FOLDERDEC;
 import libs.DecFactory;
 import libs.ParseManager;
 
@@ -42,13 +43,23 @@ public class Main {
             rootDec.parse();
         }
 
+        System.out.println("STARTING VALIDATE");
+        for(DEC dec : symbolTable.values()) {
+            dec.validate();
+        }
+        System.out.println("ENDING VALIDATE");
+
+
         System.out.println("STARTING EVALUATE");
         System.out.println(symbolTable.size());
+
+        DEC.deleteFolderContents();
 
         for (DEC dec : symbolTable.values()) {
             dec.validate();
             dec.evaluate();
         }
+        System.out.println("ENDING EVALUATE");
 
         System.out.println("Done");
     }

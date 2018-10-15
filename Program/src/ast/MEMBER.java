@@ -8,18 +8,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MEMBER extends Node {
-    private TokenizedLine tokens;
-    private Boolean get = false;
-    private Boolean set = false;
-    private String type;
-    private String name;
-    private Set<String> allowedTypes = new HashSet<>(Arrays.asList
-            ("int", "double", "char", "String", "Integer", "Character", "Double",
-                    "List[String]", "List[Integer]", "List[Character]", "List[Double]"));
 
-    public Boolean pHasGet = false;
-    public Boolean pHasSet = false;
-    public Boolean isProtect = false;
+    TokenizedLine tokens;
+    Boolean get = false;
+    Boolean set = false;
+    String type;
+    String name;
+    Set<String> allowedTypes = new HashSet<>(Arrays.asList
+            ("int", "double", "char", "String", "Integer", "Character", "Double",
+                    "ListofString", "ListofInteger", "ListofCharacter", "ListofDouble"));
+
+    Boolean pHasGet = false;
+    Boolean pHasSet = false;
+    Boolean isProtect = false;
+    Boolean isInSuper = false;
 
     public MEMBER(TokenizedLine tokens) {
         this.tokens = tokens;
@@ -37,7 +39,12 @@ public class MEMBER extends Node {
             }
         }
 
-        this.type = type;
+        if(type.contains("List")) {
+            this.type = "List<" + type.substring(type.indexOf("f") + 1) + ">";
+        } else {
+            this.type = type;
+        }
+
         this.name = tokens.pop();
         if(this.tokens.checkNext("[")) { // has getters/setters
             this.handleGetSet();
@@ -63,20 +70,5 @@ public class MEMBER extends Node {
         this.tokens.pop(); // Consume close brace
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public Boolean hasSetter() {
-        return this.set;
-    }
-
-    public Boolean hasGetter() {
-        return this.get;
-    }
 
 }

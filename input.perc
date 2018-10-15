@@ -1,6 +1,8 @@
-Folder rootDir
-  Class innerClass > innerClass2(int test [get], String test [set])
-  Folder innerDir
-    Class innerInnerClass
-  Class innerClass2
-Class rootClass
+Folder root
+    Folder humans
+        Class Teacher > person (ListofString names [get])
+        Class Person (ListofString names [get/set], int age)
+Folder root2
+    Folder humans2
+        Class Person2 (String name [get/set], int age)
+        Class Teacher2 > ./output/root/humans/person (String name [get/set], ListofString yearsOfExperience [get/set], String subject [get])

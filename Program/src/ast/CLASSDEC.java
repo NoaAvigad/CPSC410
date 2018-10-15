@@ -3,8 +3,12 @@ package ast;
 import libs.TokenizedLine;
 import ui.Main;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CLASSDEC extends FILEDEC {
 
@@ -24,19 +28,36 @@ public class CLASSDEC extends FILEDEC {
 
     @Override
     public void evaluate() {
-        System.out.println("In CLASSDEC");
+        super.evaluate();
+        System.out.println("Evaluating file: " + fullPath + ".java");
 
-        try {
-            /**
-             * Since we evaluate in a random order (by iterating over the map), might need to create the folder for each
-             *  file as well.
-             */
-            File parentDir = new File(dirPath);
-            parentDir.mkdirs();
-            File file = new File(fullPath + ".java");
-            file.createNewFile();
+        try(FileWriter fw = new FileWriter(fullPath + ".java", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+
+            // if same dir, just take classname. if different then need to import and use class name in extends
+            String inheritanceSignature = this.buildInheritanceSignature(out);
+
+            // check if need to import list
+            if(this.doesHaveList) {
+                out.println("import java.util.*;");
+                out.println("\n");
+            }
+
+            out.println("public class " + this.name + inheritanceSignature + " {");
+            //list for all members that need getter/setter
+            List<MEMBER> getterOrSetterMems = new ArrayList<>();
+            this.buildMembers(this.members, out, getterOrSetterMems);
+            this.buildGettersAndSetters(out, getterOrSetterMems);
+            out.println("}");
+
         } catch (IOException e) {
-            this.kill("Error creating file with the following path: " + fullPath);
+            this.kill("Error writing to " + this.name + ".java");
         }
     }
+
+
+
+
 }

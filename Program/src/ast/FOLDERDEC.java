@@ -5,6 +5,11 @@ import libs.TokenizedLine;
 import ui.Main;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 
 public class FOLDERDEC extends DEC {
     public FOLDERDEC(TokenizedLine tokens) {
@@ -29,16 +34,16 @@ public class FOLDERDEC extends DEC {
 
     @Override
     public void validate() {
-        // duplicate folder name is validated in parse
+
     }
 
     @Override
     public void evaluate() {
-        System.out.println("LETS TRY CREATING FOLDERS: " + fullPath);
+        System.out.println("Evaluating folder: " + fullPath);
         if(new File(fullPath).mkdirs()) {
-            System.out.println("Folder created");
+            System.out.println("Created folder " + fullPath);
         } else {
-            System.out.println("Something went wrong");
+            System.out.println("Folder " + fullPath + " not created since it already exists");
         }
     }
 }
