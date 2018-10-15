@@ -1,6 +1,6 @@
 Folder root
     Folder humans
-        Class Teacher > person (String name)
+        Class Teacher > person (String name [get])
         Class Person (String name [get/set], int age)
 Folder root2
     Folder humans2
