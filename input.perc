@@ -1,8 +1,8 @@
 Folder root
     Folder humans
-        Class Teacher > person (String name [get])
-        Class Person (String name [get/set], int age)
+        Class Teacher > person (ListofString names [get])
+        Class Person (ListofString names [get/set], int age)
 Folder root2
     Folder humans2
         Class Person2 (String name [get/set], int age)
-        Class Teacher2 > ./output/root/humans/person (String name [get/set], int yearsOfExperience [get/set], String subject [get])
+        Class Teacher2 > ./output/root/humans/person (String name [get/set], ListofString yearsOfExperience [get/set], String subject [get])

@@ -4,11 +4,14 @@ import libs.TokenizedLine;
 import ui.Main;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 abstract class FILEDEC extends DEC {
     ArrayList<MEMBER> members = new ArrayList<>();
     String _extends = null;
+    Boolean doesHaveList = false;
 
     public FILEDEC(TokenizedLine tokens) {
         super(tokens);
@@ -40,7 +43,7 @@ abstract class FILEDEC extends DEC {
                 String fullParentClassPath = parentClassDir + Character.toUpperCase(parentClassName.charAt(0)) + parentClassName.substring(1);
 
 
-                this._extends =  fullParentClassPath;//update to have the full path
+                this._extends = fullParentClassPath;//update to have the full path
             }
         }
         if (this.tokens.checkNext("(")) {
@@ -110,8 +113,8 @@ abstract class FILEDEC extends DEC {
         this.tokens.pop(); // Pop open brace
         boolean first = true;
         while (!this.tokens.peek().equals(")")) {
-            if(!first) {
-                if(this.tokens.checkNext(",")) {
+            if (!first) {
+                if (this.tokens.checkNext(",")) {
                     this.tokens.pop();
                 } else {
                     this.kill("Invalid member list");
@@ -122,9 +125,81 @@ abstract class FILEDEC extends DEC {
             }
             MEMBER member = new MEMBER(tokens);
             member.parse();
+            //set flag for list
+            if (member.type.contains("List")) {
+                this.doesHaveList = true;
+            }
             this.members.add(member);
             first = false;
         }
         this.tokens.pop(); // Pop close brace
     }
+
+    private StringBuilder buildGetSetSb(MEMBER mem, String getOrSet, boolean isOverride) {
+        StringBuilder sb = new StringBuilder("\n\t");
+
+        if (isOverride) {
+            sb.append("@Override").append("\n\t");
+        }
+
+        sb.append("public ").append(mem.type).append(" ")
+                .append(getOrSet).append(mem.name.substring(0, 1).toUpperCase()).append(mem.name.substring(1));
+
+        if (getOrSet.equals("get")) {
+            sb.append("() {").append("\n\t\t").append("return this.").append(mem.name).append(";");
+        } else {
+            sb.append("(" + mem.type + " " + mem.name + ") {").append("\n\t\t").append("this.").append(mem.name).append(" = ").append(mem.name).append(";");
+        }
+
+        sb.append("\n\t}");
+        return sb;
+    }
+
+    protected void buildMembers(List<MEMBER> members, PrintWriter out, List<MEMBER> getterOrSetterMems) {
+        for(MEMBER mem : members) {
+            StringBuilder sb = new StringBuilder();
+            if (!mem.isInSuper) {
+                sb.append("\t");
+                if (mem.isProtect) {
+                    sb.append("protected");
+                } else {
+                    sb.append("private");
+                }
+
+                sb.append(" ").append(mem.type).append(" ").append(mem.name).append(";");
+            }
+
+            out.println(sb.toString());
+            if(mem.get || mem.set) {
+                getterOrSetterMems.add(mem);
+            }
+        }
+    }
+
+    protected String buildInheritanceSignature(PrintWriter out) {
+        String inheritanceSignature = "";
+        if(this._extends != null) {
+            String parentClassDir = this._extends.substring(0, this._extends.lastIndexOf("/"));
+            if(!dirPath.equals(parentClassDir)) {
+                out.println("import " + parentClassDir + ";");
+            }
+            inheritanceSignature = " extends " + this._extends.substring(this._extends.lastIndexOf("/") + 1);
+
+        }
+
+        return inheritanceSignature;
+    }
+
+    protected void buildGettersAndSetters(PrintWriter out, List<MEMBER> getterOrSetterMems) {
+        for(MEMBER mem : getterOrSetterMems) {
+            if(mem.get) {
+                out.println(this.buildGetSetSb(mem, "get", mem.pHasGet).toString());
+            }
+
+            if (mem.set) {
+                out.println(this.buildGetSetSb(mem,"set", mem.pHasSet).toString());
+            }
+        }
+    }
 }
+

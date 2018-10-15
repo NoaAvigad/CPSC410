@@ -37,51 +37,20 @@ public class CLASSDEC extends FILEDEC {
         {
 
             // if same dir, just take classname. if different then need to import and use class name in extends
-            String inheritanceSignature = "";
-            if(this._extends != null) {
-                String parentClassDir = this._extends.substring(0, this._extends.lastIndexOf("/"));
-                if(!dirPath.equals(parentClassDir)) {
-                    out.println("import " + parentClassDir + "\n");
-                }
-                inheritanceSignature = " extends " + this._extends.substring(this._extends.lastIndexOf("/") + 1);
+            String inheritanceSignature = this.buildInheritanceSignature(out);
 
+            // check if need to import list
+            if(this.doesHaveList) {
+                out.println("import java.util.ArrayList;");
+                out.println("import java.util.LinkedList;");
+                out.println("\n");
             }
-
 
             out.println("public class " + this.name + inheritanceSignature + " {");
             //list for all members that need getter/setter
             List<MEMBER> getterOrSetterMems = new ArrayList<>();
-
-            // append to java file all member variables
-            for(MEMBER mem : this.members) {
-                StringBuilder sb = new StringBuilder();
-                if(!mem.isInSuper) {
-                    sb.append("\t");
-                    if (mem.isProtect) {
-                        sb.append("protected");
-                    } else {
-                        sb.append("private");
-                    }
-                    sb.append(" ").append(mem.type).append(" ").append(mem.name).append(";");
-                    out.println(sb.toString());
-                }
-
-                if(mem.get || mem.set) {
-                    getterOrSetterMems.add(mem);
-                }
-            }
-
-            // append to java file all variables getters/setters
-            for(MEMBER mem : getterOrSetterMems) {
-                if(mem.get) {
-                    out.println(buildGetSetSb(mem, "get", mem.pHasGet).toString());
-                }
-
-                if (mem.set) {
-                    out.println(buildGetSetSb(mem,"set", mem.pHasSet).toString());
-                }
-            }
-
+            this.buildMembers(this.members, out, getterOrSetterMems);
+            this.buildGettersAndSetters(out, getterOrSetterMems);
             out.println("}");
 
         } catch (IOException e) {
@@ -89,25 +58,7 @@ public class CLASSDEC extends FILEDEC {
         }
     }
 
-    StringBuilder buildGetSetSb(MEMBER mem, String getOrSet, boolean isOverride) {
-        StringBuilder sb = new StringBuilder("\n\t");
 
-        if(isOverride) {
-            sb.append("@Override").append("\n\t");
-        }
-
-        sb.append("public ").append(mem.type).append(" ")
-                .append(getOrSet).append(mem.name.substring(0,1).toUpperCase()).append(mem.name.substring(1));
-
-        if(getOrSet.equals("get")) {
-            sb.append("() {").append("\n\t\t").append("return this.").append(mem.name).append(";");
-        } else {
-            sb.append("(" + mem.type + " " + mem.name + ") {").append("\n\t\t").append("this.").append(mem.name).append(" = ").append(mem.name).append(";");
-        }
-
-        sb.append("\n\t}");
-        return sb;
-    }
 
 
 }

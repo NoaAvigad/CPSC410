@@ -3,12 +3,20 @@ package ast;
 import libs.Node;
 import libs.TokenizedLine;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MEMBER extends Node {
+
     TokenizedLine tokens;
     Boolean get = false;
     Boolean set = false;
     String type;
     String name;
+    Set<String> allowedTypes = new HashSet<>(Arrays.asList
+            ("int", "double", "char", "String", "Integer", "Character", "Double",
+                    "ListofString", "ListofInteger", "ListofCharacter", "ListofDouble"));
 
     Boolean pHasGet = false;
     Boolean pHasSet = false;
@@ -20,7 +28,23 @@ public class MEMBER extends Node {
     }
 
     public void parse() {
-        this.type = tokens.pop();
+        String type = tokens.pop();
+        if (!allowedTypes.contains(type)) {
+            String typeUpper = Character.toUpperCase(type.charAt(0)) + type.substring(1);
+            if (allowedTypes.contains(typeUpper)) {
+                // did you mean ?
+                this.kill("Did you mean: " + typeUpper + "?");
+            } else {
+                this.kill("Unsupported type - " + type);
+            }
+        }
+
+        if(type.contains("List")) {
+            this.type = "List<" + type.substring(type.indexOf("f") + 1) + ">";
+        } else {
+            this.type = type;
+        }
+
         this.name = tokens.pop();
         if(this.tokens.checkNext("[")) { // has getters/setters
             this.handleGetSet();
