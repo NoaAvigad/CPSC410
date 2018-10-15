@@ -41,8 +41,7 @@ public class CLASSDEC extends FILEDEC {
 
             // check if need to import list
             if(this.doesHaveList) {
-                out.println("import java.util.ArrayList;");
-                out.println("import java.util.LinkedList;");
+                out.println("import java.util.*;");
                 out.println("\n");
             }
 

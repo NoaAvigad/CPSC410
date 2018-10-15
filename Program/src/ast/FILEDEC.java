@@ -42,14 +42,12 @@ abstract class FILEDEC extends DEC {
                 String parentClassName = extendClassName.substring(extendClassName.lastIndexOf("/") + 1);
                 String fullParentClassPath = parentClassDir + Character.toUpperCase(parentClassName.charAt(0)) + parentClassName.substring(1);
 
-
-                this._extends = fullParentClassPath;//update to have the full path
+                this._extends = fullParentClassPath; //update to have the full path
             }
         }
         if (this.tokens.checkNext("(")) {
             this.parseMembers();
         }
-
 
         if (Main.symbolTable.containsKey(this.fullPath + ".file")) {
             this.kill("Class name already exists in this directory");
