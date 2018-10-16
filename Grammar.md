@@ -1,6 +1,6 @@
 ```
 JAVA ::= DEC+
-DEC ::= FILEDEC | FOLDERDEC
+DEC ::= SPACING* FILEDEC | FOLDERDEC
 FOLDERDEC ::= “Folder” FNAME DEC* 
 FNAME ::= STRING
 FILEDEC ::= CLASSTYPE CNAME (“>” INHERIT)? (DATA)?
@@ -8,9 +8,10 @@ CLASSTYPE ::= “Class” | “Abstract”
 DATA ::= “(” MEMBERDEC (", " MEMBERDEC)* ")"
 MEMBERDEC ::=  MTYPE MNAME GETSET?
 GETSET ::= "[" "get" | "set" | "get/set" "]"
-MTYPE ::= OBJECT | ”List[”OBJECT”]” | PRIMITIVE
+MTYPE ::= OBJECT | ”Listof”OBJECT | PRIMITIVE
 OBJECT ::= “String” | ”Integer” | ”Character” | ”Double”
 PRIMITIVE ::= ”int” | ”double” | ”char”
+SPACING ::= "  " // Two spaces
 INHERIT ::= STRING
 MNAME ::= STRING
 CNAME ::= STRING
