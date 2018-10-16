@@ -134,12 +134,13 @@ abstract class FILEDEC extends DEC {
     }
 
     private StringBuilder buildGetSetSb(MEMBER mem, String getOrSet, boolean isOverride) {
-        StringBuilder sb = new StringBuilder("\n\t");
+        StringBuilder sb = new StringBuilder("\t");
 
         if (isOverride) {
-            sb.append("@Override").append("\n\t");
+            sb.append("@Override");
         }
 
+        sb.append("\n\t");
         sb.append("public ").append(mem.type).append(" ")
                 .append(getOrSet).append(mem.name.substring(0, 1).toUpperCase()).append(mem.name.substring(1));
 

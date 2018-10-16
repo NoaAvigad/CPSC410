@@ -38,7 +38,7 @@ public class ABSTRACTDEC extends FILEDEC {
 
             if(this.doesHaveList) {
                 out.println("import java.util.*;");
-                out.println("\n");
+                out.println();
             }
 
             out.println("public abstract class " + this.name + inheritanceSignature + " {");
