@@ -189,6 +189,7 @@ abstract class FILEDEC extends DEC {
                 int rootDirLocation = parentClassDir.indexOf(Main.ROOT_DIR) + 1;
                 String parentImport = parentClassDir.substring(rootDirLocation + Main.ROOT_DIR.length()).replace("/", ".");
                 out.println("import " + parentImport + "." + classNameWithNoPath + ";");
+                out.println();
             }
             inheritanceSignature = " extends " + classNameWithNoPath;
 

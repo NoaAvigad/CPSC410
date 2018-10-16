@@ -31,6 +31,7 @@ public class ABSTRACTDEC extends FILEDEC {
             PrintWriter out = new PrintWriter(bw))
         {
 
+            this.buildPackageStatement(out);
             // if same dir, just take classname. if different then need to import and use class name in extends
             String inheritanceSignature = this.buildInheritanceSignature(out);
 
