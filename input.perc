@@ -1,8 +1,15 @@
-Folder root
-    Folder humans
-        Class Teacher > person (ListofString names [get])
-        Class Person (ListofString names [get/set], int age)
-Folder root2
-    Folder humans2
-        Class Person2 (String name [get/set], int age)
-        Class Teacher2 > ./output/root/humans/person (String name [get/set], ListofString yearsOfExperience [get/set], String subject [get])
+Folder ast
+  Class ABSTRACTDEC > FILEDEC
+  Class CLASSDEC > FILEDEC
+  Abstract FILEDEC > DEC(String _extends [get/set], boolean doesHaveList)
+  Class FOLDERDEC > DEC
+  Abstract DEC > ./output/libs/Node(String name [get], String dirPath, String fullPath)
+  Class MEMBER > ./output/libs/Node(boolean get, boolean set, String type, String name, boolean pHasGet, boolean pHasSet, boolean isProtect, boolean isInSuper)
+Folder grammarsamples
+Folder libs
+  Class DecFactory
+  Class Node
+  Class ParseManager(int currentIndent, int spacesPerIndent)
+  Class TokenizedLine(ListofString punctuation)
+Folder ui
+  Class Main(String ROOT_DIR)
