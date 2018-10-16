@@ -212,7 +212,7 @@ abstract class FILEDEC extends DEC {
     protected void buildPackageStatement(PrintWriter out) {
         int rootDirLocation = this.dirPath.indexOf(Main.ROOT_DIR) + 1;
         String packageName = this.dirPath.substring(rootDirLocation + Main.ROOT_DIR.length()).replace("/", ".");
-        out.println("package " + packageName);
+        out.println("package " + packageName + ";");
         out.println();
     }
 
