@@ -8,17 +8,19 @@ public class DecFactory {
 
     public static DEC getDec(TokenizedLine tokens) {
         DEC toReturn = null;
-        switch(tokens.pop()) {
-            case "Folder":
+        String Check = tokens.pop() ;
+        switch(Check.toLowerCase()) {
+            case "folder":
                 toReturn = new FOLDERDEC(tokens);
                 break;
-            case "Abstract":
+            case "abstract":
                 toReturn = new ABSTRACTDEC(tokens);
                 break;
-            case "Class":
+            case "class":
                 toReturn = new CLASSDEC(tokens);
                 break;
             default:
+                System.out.print("Invalid Declaration : " + Check) ;
                 System.exit(1); // Probably move this to caller + tokenizer
         }
         return toReturn;

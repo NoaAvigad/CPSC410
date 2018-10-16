@@ -141,7 +141,11 @@ abstract class FILEDEC extends DEC {
             sb.append("\n\t");
         }
 
-        sb.append("public ").append(mem.type).append(" ")
+
+
+        sb.append("public ") ;
+        if (getOrSet.equals("get")) {sb.append(mem.type);} else {sb.append("void");}
+        sb.append(" ")
                 .append(getOrSet).append(mem.name.substring(0, 1).toUpperCase()).append(mem.name.substring(1));
 
         if (getOrSet.equals("get")) {
