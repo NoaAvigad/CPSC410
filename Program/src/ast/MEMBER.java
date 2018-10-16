@@ -15,8 +15,8 @@ public class MEMBER extends Node {
     String type;
     String name;
     Set<String> allowedTypes = new HashSet<>(Arrays.asList
-            ("int", "double", "char", "String", "Integer", "Character", "Double",
-                    "ListofString", "ListofInteger", "ListofCharacter", "ListofDouble"));
+            ("int", "double", "char", "String", "Integer", "Character", "Double", "ListofBoolean",
+                    "ListofString", "ListofInteger", "ListofCharacter", "ListofDouble", "boolean"));
 
     Boolean pHasGet = false;
     Boolean pHasSet = false;
