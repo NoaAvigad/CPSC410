@@ -36,6 +36,7 @@ public class CLASSDEC extends FILEDEC {
             PrintWriter out = new PrintWriter(bw))
         {
 
+            this.buildPackageStatement(out);
             // if same dir, just take classname. if different then need to import and use class name in extends
             String inheritanceSignature = this.buildInheritanceSignature(out);
 
@@ -49,6 +50,7 @@ public class CLASSDEC extends FILEDEC {
             //list for all members that need getter/setter
             List<MEMBER> getterOrSetterMems = new ArrayList<>();
             this.buildMembers(this.members, out, getterOrSetterMems);
+            this.buildConstructor(out);
             this.buildGettersAndSetters(out, getterOrSetterMems);
             out.println("}");
 

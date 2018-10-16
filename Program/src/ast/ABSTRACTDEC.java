@@ -45,6 +45,7 @@ public class ABSTRACTDEC extends FILEDEC {
             //list for all members that need getter/setter
             List<MEMBER> getterOrSetterMems = new ArrayList<>();
             this.buildMembers(this.members, out, getterOrSetterMems);
+            this.buildConstructor(out);
             this.buildGettersAndSetters(out, getterOrSetterMems);
             out.println("}");
 

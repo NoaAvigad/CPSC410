@@ -138,9 +138,9 @@ abstract class FILEDEC extends DEC {
 
         if (isOverride) {
             sb.append("@Override");
+            sb.append("\n\t");
         }
 
-        sb.append("\n\t");
         sb.append("public ").append(mem.type).append(" ")
                 .append(getOrSet).append(mem.name.substring(0, 1).toUpperCase()).append(mem.name.substring(1));
 
@@ -168,21 +168,29 @@ abstract class FILEDEC extends DEC {
                 sb.append(" ").append(mem.type).append(" ").append(mem.name).append(";");
             }
 
-            out.println(sb.toString());
+            if(!sb.toString().equals("")) {
+                out.println(sb.toString());
+            }
+
             if(mem.get || mem.set) {
                 getterOrSetterMems.add(mem);
             }
         }
+
+        out.println();
     }
 
     protected String buildInheritanceSignature(PrintWriter out) {
         String inheritanceSignature = "";
         if(this._extends != null) {
             String parentClassDir = this._extends.substring(0, this._extends.lastIndexOf("/"));
+            String classNameWithNoPath = this._extends.substring(this._extends.lastIndexOf("/") + 1);
             if(!dirPath.equals(parentClassDir)) {
-                out.println("import " + parentClassDir + ";");
+                int rootDirLocation = parentClassDir.indexOf(Main.ROOT_DIR) + 1;
+                String parentImport = parentClassDir.substring(rootDirLocation + Main.ROOT_DIR.length()).replace("/", ".");
+                out.println("import " + parentImport + "." + classNameWithNoPath + ";");
             }
-            inheritanceSignature = " extends " + this._extends.substring(this._extends.lastIndexOf("/") + 1);
+            inheritanceSignature = " extends " + classNameWithNoPath;
 
         }
 
@@ -199,6 +207,21 @@ abstract class FILEDEC extends DEC {
                 out.println(this.buildGetSetSb(mem,"set", mem.pHasSet).toString());
             }
         }
+    }
+
+    protected void buildPackageStatement(PrintWriter out) {
+        int rootDirLocation = this.dirPath.indexOf(Main.ROOT_DIR) + 1;
+        String packageName = this.dirPath.substring(rootDirLocation + Main.ROOT_DIR.length()).replace("/", ".");
+        out.println("package " + packageName);
+        out.println();
+    }
+
+    protected void buildConstructor(PrintWriter out) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\t").append("public " + this.fullPath.substring(this.fullPath.lastIndexOf("/") + 1) + "() {")
+                .append("\n\t").append("}");
+        out.println(sb.toString());
+        out.println();
     }
 }
 
